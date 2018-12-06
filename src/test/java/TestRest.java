@@ -1,9 +1,15 @@
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
 import io.restassured.authentication.PreemptiveBasicAuthScheme;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.*;
+import static org.junit.experimental.categories.Categories.CategoryFilter.include;
+
 //первый тест на rest-assuared
 public class TestRest {
     //логин и пароль для авторизации
@@ -22,8 +28,8 @@ public class TestRest {
         basePath = "/v2/entity/AUTO3N/PersonProfile/"; //для пп свой кусок, как вариант можно потом наклепать еще для других сущностей
     }
 
-    @Test(description = "GET") //по тестнг объявление тест-кейса(в виде анотации) и дескрипт
-    public void getRequest() throws JSONException {
+    @Test(description = "GET") //по тестнг объявление тест-кейса(в виде анотации) и дескрипт (Условно проверка на существование объекта и вывод объекта)
+    public void getRequest_1() throws JSONException {
         given() // состояние, до того, как начнется описание поведения. можно рассматривать как предварительное условие теста.-ДАНО
                 .auth()//авторизация
                 .preemptive()//указываем что используем базу из предтеста
@@ -35,5 +41,24 @@ public class TestRest {
                 .statusCode(200);
         /*И все это GIVEN-WHEN-THEN называется "Спецификация поведения системы" и все это оказалось BDD - разработка через поведение. Учение свет не ученье тьма*/
         System.out.println(get("/242").asString());
+    }
+
+    @Test(description = "GET")//тут хотелось бы так же получить json его распарсить и посмотреть имя пользователя. жесткий вопрос как и чем парсить, потому что с org.json там надо будет по всему ходить что не не круто...
+    public void getRequest_2() throws JSONException{
+        given()
+                .auth()
+                .preemptive()
+                .basic(username,password)
+                .contentType("application/json")
+        .when()
+                .get("/242")
+        .then()
+                .statusCode(200);
+        System.out.println(get("/242").asString());
+        JSONObject jR = new JSONObject(get("/242").asString());
+        System.out.println(jR);
+        System.out.println(jR.get("PersonProfile"));
+        //String str = jR.getString("PersonProfile.name");
+        //Assert.assertEquals(str, "Бабин Александр Павлович");
     }
 }
