@@ -1,20 +1,16 @@
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
 import io.restassured.authentication.PreemptiveBasicAuthScheme;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.*;
-import static org.junit.experimental.categories.Categories.CategoryFilter.include;
 
 //первый тест на rest-assuared
 public class TestRest {
     //логин и пароль для авторизации
-    static String username = "ERP";
-    static String password = "erp2016auto3n-stage";
+    static String username = "";
+    static String password = "";
     //по тестнг перед тестом настройка, в нашем случае комплекс и способ авторизации при отправке запроса
     @BeforeTest
     public static void setup()
